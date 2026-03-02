@@ -33,7 +33,7 @@ C4Context
       }
 
       System_Boundary(dataProcessing, "Data Processing Platform") {
-        Container(processingCode, "Data Processing code", "Code")
+        Container(processingCode, "Data Platform Code", "Code")
         Container(dataProcessing, "Data Processing Tools & Pipelines", "Tool")
       }
     }
@@ -53,8 +53,9 @@ C4Context
       }
 
       System_Boundary(modelPlatform, "Model Platform Layer") {
-        Container(modelProcessingCode, "Model Processing code", "Code")
-        Container(modelProcessing, "Model Processing Tools & Pipelines", "Tool")
+        Container(modelProcessingCode, "Training Platform Code", "Code")
+        Container(modelProcessing, "Model Training Pipeline", "Tool")
+        Container(modelValidationPipeline, "Model Validation Pipelines", "Tool")
       }
     }
 
@@ -122,10 +123,10 @@ C4Context
   Rel(datasci, modelRegistryUI, "Interacts with")
   Rel(modelRegistryUI, metadataModel, "Exposes")
   Rel(unvettedModels, thirdPartyModels, "Sources")
-  Rel(unvettedModels, modelProcessing, "Are validated by")
-  Rel(modelProcessing, vettedModels, "Produces")
+  Rel(unvettedModels, modelValidationPipeline, "Are validated by")
+  Rel(modelValidationPipeline, vettedModels, "Produces")
+  Rel(modelProcessing, unvettedModels, "Produces")
   Rel(vettedModels, modelProcessing, "Are fine-tuned by")
-  Rel(modelProcessing, vettedModels, "Produces")
 
   %%% Model Processing Platform
   Rel(modelProcessing, modelProcessingCode, "Uses")
@@ -137,4 +138,11 @@ C4Context
   Rel(modelProcessing, expResults, "Produces")
   Rel(modelProcessing, hyperParameterStore, "Reads from")
   Rel(modelProcessing, featureStores, "Reads from")
+
+  Rel(modelValidationPipeline, modelProcessingCode, "Uses")
+  Rel(modelValidationPipeline, logs, "Produces")
+  Rel(modelValidationPipeline, traces, "Produces")
+  Rel(modelValidationPipeline, metrics, "Produces")
+  Rel(modelValidationPipeline, events, "Produces")
+  Rel(modelValidationPipeline, attestations, "Produces")
 
