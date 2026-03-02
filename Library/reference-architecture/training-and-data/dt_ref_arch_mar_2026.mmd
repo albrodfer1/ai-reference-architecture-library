@@ -34,7 +34,8 @@ C4Context
 
       System_Boundary(dataProcessing, "Data Processing Platform") {
         Container(processingCode, "Data Platform Code", "Code")
-        Container(dataProcessing, "Data Processing Tools & Pipelines", "Tool")
+        Container(dataProcessing, "Data Transformation Pipelines", "Tool")
+        Container(dataValidationPipelines, "Data Validation Pipelines", "Tool")
       }
     }
 
@@ -91,7 +92,8 @@ C4Context
   Rel(biTools, featureStores, "Reads")
 
   %%% Data Landing
-  Rel(rawData, dataProcessing, "Is validated by")
+  Rel(rawData, dataValidationPipelines, "Is validated by")
+  Rel(dataValidationPipelines, metadataData, "Uses")
   Rel(dataProcessing, validatedData, "Produces")
   Rel(rawData, dataProcessing, "Is experimented by")
   Rel(dataProcessing, rawDataExp, "Produces")
@@ -102,6 +104,13 @@ C4Context
   Rel(dataProcessing, traces, "Produces")
   Rel(dataProcessing, metrics, "Produces")
   Rel(dataProcessing, events, "Produces")
+  Rel(dataProcessing, attestations, "Produces")
+
+  Rel(dataValidationPipelines, processingCode, "Uses")
+  Rel(dataValidationPipelines, logs, "Produces")
+  Rel(dataValidationPipelines, traces, "Produces")
+  Rel(dataValidationPipelines, metrics, "Produces")
+  Rel(dataValidationPipelines, events, "Produces")
   Rel(dataProcessing, attestations, "Produces")
 
   %% Data Management
@@ -123,6 +132,8 @@ C4Context
   Rel(datasci, modelRegistryUI, "Interacts with")
   Rel(modelRegistryUI, metadataModel, "Exposes")
   Rel(unvettedModels, thirdPartyModels, "Sources")
+  Rel(modelValidationPipeline, metadataModel, "Uses")
+  Rel(metadataModel, attestations, "Sources")
   Rel(unvettedModels, modelValidationPipeline, "Are validated by")
   Rel(modelValidationPipeline, vettedModels, "Produces")
   Rel(modelProcessing, unvettedModels, "Produces")
