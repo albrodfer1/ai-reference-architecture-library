@@ -1,0 +1,140 @@
+C4Context
+  title AI Data and Training Reference Architecture
+
+  %% Users
+  Person(dataeng, "Data Engineer", "An user interacting with the Data Catalog")
+  Person(businessUser, "Business User", "An user interacting with Data Presentation/BI Tools")
+  Person(datasci, "Data Scientist", "An user interacting with the Model Registry")
+
+  Enterprise_Boundary(b0, "EnterpriseBoundary") {
+    
+    System_Boundary(dataPlatform, "Data Platform") {
+      System_Boundary(dataCatalog, "Data Catalog") {
+        Container(dataCatalogUI, "Data Catalog UI", "Component")
+        Container(metadataData, "Metadata", "Data")
+        Container(dataCrawlers, "Data Crawlers", "Component")
+        Container(dataLabelers, "Data Labelers", "Component")
+      }
+      
+      System_Boundary(dataPresentation, "Data Presentation Layers") {
+        Container(biTools, "BI and Visualization Tools", "Tool")
+      }
+
+      System_Boundary(dataLanding, "Data Landing Zone") {
+        Container(rawData, "Raw Data", "Storage")
+        Container(rawDataExp, "Raw Data Experiments", "Storage")
+      }
+
+      System_Boundary(dataManagement, "Data Management Zone") {
+        Container(validatedData, "Validated Data", "Storage")
+        Container(DMZExp, "DMZ Data Experiments", "Storage")
+        Container(processedData, "Processed Data", "Storage")
+        Container(featureStores, "Feature Stores", "Storage")
+      }
+
+      System_Boundary(dataProcessing, "Data Processing Platform") {
+        Container(processingCode, "Data Processing code", "Code")
+        Container(dataProcessing, "Data Processing Tools & Pipelines", "Tool")
+      }
+    }
+
+    System_Boundary(trainingLayer, "Training Layer") {
+      System_Boundary(modelRegistry, "Model Registry Layer") {
+        Container(modelRegistryUI, "Model Registry UI", "Interface")
+        Container(metadataModel, "Metadata", "Data")
+        Container(hyperParameterStore, "Hyperparameter Store", "Storage")
+        Container(expResults, "Experiment Results", "Data")
+        System_Boundary(staging, "Unvetted") {
+          Container(unvettedModels, "Unvetted Models", "Storage")
+        }
+        System_Boundary(production, "Vetted") {
+          Container(vettedModels, "Vetted Models", "Storage")
+        }
+      }
+
+      System_Boundary(modelPlatform, "Model Platform Layer") {
+        Container(modelProcessingCode, "Model Processing code", "Code")
+        Container(modelProcessing, "Model Processing Tools & Pipelines", "Tool")
+      }
+    }
+
+    System_Boundary(observabilityLayer, "Lineage and Observability Layer") {
+      Container(logs, "Logs", "Data")
+      Container(traces, "Traces", "Data")
+      Container(metrics, "Metrics", "Data")
+      Container(events, "Events", "Data")
+      Container(attestations, "Attestations", "Data")
+    }
+  }
+
+  %% External Systems
+  System_Ext(thirdPartyModels, "3rd Party Models", "External Models")
+
+  %% Relationships
+  %%% Data Catalog
+  Rel(dataeng, dataCatalogUI, "Interacts with")
+  Rel(dataCatalogUI, metadataData, "Exposes")
+  Rel(metadataData, dataCrawlers, "Is populated by")
+  Rel(metadataData, dataLabelers, "Is populated by")
+  Rel(dataCrawlers, validatedData, "Reads")
+  Rel(dataCrawlers, processedData, "Reads")
+  Rel(dataCrawlers, featureStores, "Reads")
+  Rel(dataLabelers, validatedData, "Reads")
+  Rel(dataLabelers, processedData, "Reads")
+  Rel(dataLabelers, featureStores, "Reads")
+  Rel(metadataData, attestations, "Sources")
+
+  %%% Data Presentation Layer
+  Rel(businessUser, biTools, "Interacts with")
+  Rel(biTools, processedData, "Reads")
+  Rel(biTools, featureStores, "Reads")
+
+  %%% Data Landing
+  Rel(rawData, dataProcessing, "Is validated by")
+  Rel(dataProcessing, validatedData, "Produces")
+  Rel(rawData, dataProcessing, "Is experimented by")
+  Rel(dataProcessing, rawDataExp, "Produces")
+
+  %%% Data Processing Platform
+  Rel(dataProcessing, processingCode, "Uses")
+  Rel(dataProcessing, logs, "Produces")
+  Rel(dataProcessing, traces, "Produces")
+  Rel(dataProcessing, metrics, "Produces")
+  Rel(dataProcessing, events, "Produces")
+  Rel(dataProcessing, attestations, "Produces")
+
+  %% Data Management
+  Rel(validatedData, dataProcessing, "Is processed by")
+  Rel(dataProcessing, processedData, "Produces")
+  Rel(validatedData, dataProcessing, "Is experimented by")
+  Rel(dataProcessing, DMZExp, "Produces")
+
+  Rel(validatedData, dataProcessing, "Is experimented by")
+  Rel(dataProcessing, DMZExp, "Produces")
+
+  Rel(validatedData, dataProcessing, "Is prepared for training by")
+  Rel(dataProcessing, featureStores, "Produces")
+
+  Rel(processedData, dataProcessing, "Is prepared for training by")
+  Rel(dataProcessing, featureStores, "Produces")
+
+  %%% Model Registry
+  Rel(datasci, modelRegistryUI, "Interacts with")
+  Rel(modelRegistryUI, metadataModel, "Exposes")
+  Rel(unvettedModels, thirdPartyModels, "Sources")
+  Rel(unvettedModels, modelProcessing, "Are validated by")
+  Rel(modelProcessing, vettedModels, "Produces")
+  Rel(vettedModels, modelProcessing, "Are fine-tuned by")
+  Rel(modelProcessing, vettedModels, "Produces")
+
+  %%% Model Processing Platform
+  Rel(modelProcessing, modelProcessingCode, "Uses")
+  Rel(modelProcessing, logs, "Produces")
+  Rel(modelProcessing, traces, "Produces")
+  Rel(modelProcessing, metrics, "Produces")
+  Rel(modelProcessing, events, "Produces")
+  Rel(modelProcessing, attestations, "Produces")
+  Rel(modelProcessing, expResults, "Produces")
+  Rel(modelProcessing, hyperParameterStore, "Reads from")
+  Rel(modelProcessing, featureStores, "Reads from")
+
