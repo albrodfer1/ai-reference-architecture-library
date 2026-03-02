@@ -102,6 +102,10 @@ C4Context
   Rel(cli, dataOrchAPI, "Makes API calls to")
   Rel(webui, dataOrchAPI, "Makes API calls to")
   Rel(dataOrchAPI, dataOrch, "Exposes")
+  Rel(dataOrch, logs, "Produces")
+  Rel(dataOrch, traces, "Produces")
+  Rel(dataOrch, metrics, "Produces")
+  Rel(dataOrch, events, "Produces")
   %%% Data Catalog
   Rel(dataeng, dataCatalogUI, "Interacts with")
   Rel(dataCatalogUI, metadataData, "Exposes")
@@ -179,6 +183,10 @@ C4Context
   Rel(trainOrch, modelIngestionPipeline, "Triggers")
   Rel(trainOrch, modelValidationPipeline, "Triggers")
   Rel(trainOrch, modelProcessing, "Triggers")
+  Rel(trainOrch, logs, "Produces")
+  Rel(trainOrch, traces, "Produces")
+  Rel(trainOrch, metrics, "Produces")
+  Rel(trainOrch, events, "Produces")
 
   %%% Model Registry
   Rel(datasci, modelRegistryUI, "Interacts with")
