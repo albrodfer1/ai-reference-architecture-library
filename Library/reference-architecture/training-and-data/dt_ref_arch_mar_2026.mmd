@@ -9,7 +9,7 @@ C4Context
   Enterprise_Boundary(b0, "Data Domain") {
     System_Boundary(b1, "Data Domain") {  
       System_Boundary(dataPlatform, "Data Platform") {
-        System_Boundary(dataInterface, "Data Platform User Interface") {
+        System_Boundary(dataInterface, "Data Platform Orchestrator") {
           Container(cli, "CLI", "Interface")
           Container(webui, "web UI", "Interface")
           Container(dataOrchAPI, "Data Platform Orchestrator API", "Component")
@@ -42,7 +42,7 @@ C4Context
           Container(featureStores, "Feature Stores", "Storage")
         }
 
-        System_Boundary(dataProcessing, "Data Processing Platform") {
+        System_Boundary(dataProcessing, "Data Processing Layer") {
           Container(processingCode, "Data Platform Code", "Code")
           Container(dataProcessing, "Data Transformation Pipelines", "Tool")
           Container(dataValidationPipelines, "Data Validation Pipelines", "Tool")
@@ -50,7 +50,7 @@ C4Context
       }
 
       System_Boundary(trainingLayer, "Training Platform") {
-        System_Boundary(trainingInterface, "Training Platform User Interface") {
+        System_Boundary(trainingInterface, "Training Platform Orchestrator") {
           Container(trainCli, "CLI", "Interface")
           Container(trainWebui, "web UI", "Interface")
           Container(trainOrchAPI, "Training Platform Orchestrator API", "Component")
@@ -71,14 +71,14 @@ C4Context
           }
         }
 
-        System_Boundary(modelPlatform, "Model Compute & Inference Layer") {
+        System_Boundary(modelPlatform, "Model Compute Layer") {
           Container(modelProcessingCode, "Training Platform Code", "Code")
           Container(modelProcessing, "Model Training Pipeline", "Tool")
           Container(modelValidationPipeline, "Model Validation Pipelines", "Tool")
         }
       }
 
-      System_Boundary(observabilityLayer, "Lineage and Observability Layer") {
+      System_Boundary(observabilityLayer, "Lineage and Observability") {
         Container(logs, "Logs", "Data")
         Container(traces, "Traces", "Data")
         Container(metrics, "Metrics", "Data")
