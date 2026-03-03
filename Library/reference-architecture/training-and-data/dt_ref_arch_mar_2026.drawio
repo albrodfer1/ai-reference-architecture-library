@@ -1,1 +1,43 @@
-<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="29.6.0">
+  <diagram name="Page-1" id="MeZDHI22VQ0Ya0R0Z4hW">
+    <mxGraphModel dx="1193" dy="1119" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-53" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="AI Platform Orchestrator" vertex="1">
+          <mxGeometry height="220" width="240" x="1000" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-54" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Catalog Layer" vertex="1">
+          <mxGeometry height="220" width="280" x="640" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-55" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Presentation Layer" vertex="1">
+          <mxGeometry height="220" width="280" x="340" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-56" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Platform Orchestrator" vertex="1">
+          <mxGeometry height="220" width="260" x="60" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-57" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Landing Layer" vertex="1">
+          <mxGeometry height="220" width="860" x="60" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-58" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Processing Layer" vertex="1">
+          <mxGeometry height="220" width="860" x="60" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-59" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Management Layer" vertex="1">
+          <mxGeometry height="220" width="860" x="60" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-60" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Model Registry" vertex="1">
+          <mxGeometry height="220" width="600" x="1260" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-61" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Model Unvetted Layer" vertex="1">
+          <mxGeometry height="220" width="860" x="1000" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-62" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="AI Processing Layer" vertex="1">
+          <mxGeometry height="220" width="860" x="1000" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="bdVsne_roxrDpU_Uw6Yo-63" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Model Vetted Layer" vertex="1">
+          <mxGeometry height="220" width="860" x="1000" y="1100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
