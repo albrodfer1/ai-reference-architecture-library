@@ -10,8 +10,6 @@ C4Context
     System_Boundary(b1, "Data Domain") {  
       System_Boundary(dataPlatform, "Data Platform") {
         System_Boundary(dataInterface, "Data Platform Orchestrator") {
-          Container(cli, "CLI", "Interface")
-          Container(webui, "web UI", "Interface")
           Container(dataOrchAPI, "Data Platform Orchestrator API", "Component")
           Container(dataOrch, "Data Platform Orchestrator", "Component")
         }

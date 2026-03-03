@@ -6,8 +6,6 @@ graph TD
 		subgraph "Data Domain"
 			subgraph "Data Platform"
 				subgraph "Data Platform Orchestrator"
-					cli["CLI"]
-					webui["web UI"]
 					dataOrchAPI["Data Platform Orchestrator API"]
 					dataOrch["Data Platform Orchestrator"]
 				end
@@ -123,6 +121,7 @@ graph TD
 	dataValidationPipelines -->|"Produces"| traces
 	dataValidationPipelines -->|"Produces"| metrics
 	dataValidationPipelines -->|"Produces"| events
+	dataValidationPipelines -->|"Produces"| attestations
 	dataOrch -->|"Triggers"| dataValidationPipelines
 	dataProcessing -->|"Produces"| attestations
 	vettedDatasets -->|"Is processed by"| dataProcessing
