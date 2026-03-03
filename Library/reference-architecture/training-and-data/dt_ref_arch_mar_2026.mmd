@@ -63,16 +63,12 @@ C4Context
         System_Boundary(modelRegistry, "Model Registry Layer") {
           Container(modelRegistryUI, "Model Registry UI", "Interface")
           Container(metadataModel, "Metadata", "Data")
-          System_Boundary(staging, "Unvetted") {
-            Container(modelIngestionPipeline, "Ingestion Pipeline", "Tool")
-            Container(unvettedModels, "Unvetted Models", "Storage")
-          }
-          System_Boundary(production, "Vetted") {
-            Container(vettedModels, "Vetted Models", "Storage")
-          }
+          Container(unvettedModels, "Unvetted Models", "Storage")
+          Container(vettedModels, "Vetted Models", "Storage")
         }
 
         System_Boundary(modelPlatform, "Model Compute Layer") {
+          Container(modelIngestionPipeline, "Ingestion Pipeline", "Tool")
           Container(modelProcessingCode, "Training Platform Code", "Code")
           Container(modelProcessing, "Model Training Pipeline", "Tool")
           Container(modelValidationPipeline, "Model Validation Pipelines", "Tool")
