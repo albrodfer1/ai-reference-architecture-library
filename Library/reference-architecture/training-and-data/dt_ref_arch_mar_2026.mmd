@@ -152,6 +152,7 @@ C4Context
   Rel(dataValidationPipelines, traces, "Produces")
   Rel(dataValidationPipelines, metrics, "Produces")
   Rel(dataValidationPipelines, events, "Produces")
+  Rel(dataValidationPipelines, attestations, "Produces")
   Rel(dataOrch, dataValidationPipelines, "Triggers")
   Rel(dataProcessing, attestations, "Produces")
 
