@@ -102,7 +102,7 @@ C4Context
   Rel(dataeng, dataCatalogUI, "Interacts with")
   Rel(dataCatalogUI, metadataData, "Exposes")
   Rel(dataLabelers, dataCrawlers, "Uses")
-  Rel(metadataData, dataLabelers, "Is populated by")
+  Rel(dataLabelers, metadataData, "Populates")
   Rel(dataCrawlers, vettedDatasets, "Reads from")
   Rel(dataCrawlers, dataManagementProxy, "Reads from")
   Rel(dataCrawlers, processedData, "Reads from")
@@ -121,10 +121,10 @@ C4Context
   Rel(dataLandingProxy, otherDomainDataSources, "Sources")
   Rel(dataIngestionPipeline, rawData, "Produces")
   Rel(dataOrch, dataIngestionPipeline, "Triggers")
-  Rel(dataLandingProxy, dataValidationPipelines, "Is used by")
-  Rel(rawData, dataValidationPipelines, "Is validated by")
+  Rel(dataValidationPipelines, dataLandingProxy, "Uses")
+  Rel(dataValidationPipelines, rawData, "Validates")
   Rel(dataValidationPipelines, attestations, "Uses")
-  Rel(rawData, dataLandingProcessing, "Is experimented by")
+  Rel(dataLandingProcessing, rawData, "Experiments on")
   Rel(dataLandingProcessing, rawDataExp, "Produces")
   Rel(dataIngestionPipeline, logs, "Produces")
   Rel(dataIngestionPipeline, traces, "Produces")
@@ -139,15 +139,15 @@ C4Context
 
   %% Data Management
   Rel(dataManagementProxy, dataManagementProcessing, "Uses")
-  Rel(vettedDatasets, dataManagementProcessing, "Is processed by")
+  Rel(dataManagementProcessing, vettedDatasets, "Processes")
   Rel(dataManagementProcessing, processedData, "Produces")
   Rel(dataManagementProcessing, DMZExp, "Produces")
 
-  Rel(dataManagementProxy, dataManagementProcessing, "Is prepared for training by")
-  Rel(vettedDatasets, dataManagementProcessing, "Is prepared for training by")
+  Rel(dataManagementProcessing, dataManagementProxy, "Prepares for training")
+  Rel(dataManagementProcessing, vettedDatasets, "Prepares for training")
   Rel(dataManagementProcessing, featureStores, "Produces")
 
-  Rel(processedData, dataManagementProcessing, "Is prepared for training by")
+  Rel(dataManagementProcessing, processedData, "Prepares for training")
   Rel(dataManagementProcessing, featureStores, "Produces")
 
   Rel(dataManagementProcessing, logs, "Produces")
@@ -200,7 +200,7 @@ C4Context
   Rel(modelEvaluationPipeline, attestations, "Produces")
   Rel(modelEvaluationPipeline, metadataModel, "Uses")
   Rel(modelEvaluationPipeline, vettedModels, "Produces")
-  Rel(unvettedModels, modelEvaluationPipeline, "Are validated by")
+  Rel(modelEvaluationPipeline, unvettedModels, "Validates")
   Rel(modelProcessing, unvettedModels, "Produces")
-  Rel(vettedModels, modelProcessing, "Are fine-tuned by")
+  Rel(modelProcessing, vettedModels, "Fine-tunes")
 
