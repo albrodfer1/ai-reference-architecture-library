@@ -213,7 +213,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="QS7BH6PxTru-DjautKTB-24" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=none;" value="External Data Sources" vertex="1">
-          <mxGeometry height="80" width="60" x="-160" y="710" as="geometry" />
+          <mxGeometry height="80" width="60" x="-160" y="600" as="geometry" />
         </mxCell>
         <mxCell id="QS7BH6PxTru-DjautKTB-28" edge="1" parent="1" source="QS7BH6PxTru-DjautKTB-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="QS7BH6PxTru-DjautKTB-24">
           <mxGeometry relative="1" as="geometry" />
@@ -416,7 +416,7 @@
         <mxCell id="QS7BH6PxTru-DjautKTB-113" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=middle;fontFamily=Times New Roman;fontSize=15;" value="Data Quality Analysis Attestations" vertex="1">
           <mxGeometry height="52.5" width="135.5" x="1027.25" y="991.25" as="geometry" />
         </mxCell>
-        <mxCell id="QS7BH6PxTru-DjautKTB-114" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=middle;fontFamily=Times New Roman;fontSize=15;" value="Model Hyperparameters Attestation" vertex="1">
+        <mxCell id="QS7BH6PxTru-DjautKTB-114" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=middle;fontFamily=Times New Roman;fontSize=15;" value="Training Hyperparameters and Code Attestation" vertex="1">
           <mxGeometry height="52.5" width="135.5" x="1200" y="991.25" as="geometry" />
         </mxCell>
         <mxCell id="P-GqXdgCaiGKYnKXq_8U-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=top;align=left;fontFamily=Times New Roman;fontSize=15;" value="Data Management Processing Layer" vertex="1">
@@ -431,6 +431,23 @@
               <mxPoint x="768" y="871" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="P-GqXdgCaiGKYnKXq_8U-17" edge="1" parent="1" source="P-GqXdgCaiGKYnKXq_8U-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=-15;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="QS7BH6PxTru-DjautKTB-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="P-GqXdgCaiGKYnKXq_8U-15" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=none;" value="Other Domain&#39;s Data Sources" vertex="1">
+          <mxGeometry height="95" width="60" x="-90" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="P-GqXdgCaiGKYnKXq_8U-16" edge="1" parent="1" source="QS7BH6PxTru-DjautKTB-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="P-GqXdgCaiGKYnKXq_8U-15">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-10" y="750" />
+              <mxPoint x="-10" y="708" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="P-GqXdgCaiGKYnKXq_8U-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;verticalAlign=middle;fontFamily=Times New Roman;fontSize=15;" value="AIBOM" vertex="1">
+          <mxGeometry height="52.5" width="135.5" x="1539" y="983.75" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
