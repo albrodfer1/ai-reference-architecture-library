@@ -1,0 +1,167 @@
+graph TD
+	dataeng["Data Engineer"]
+	businessUser["Business User"]
+	datasci["Data Scientist"]
+	subgraph "Enterprise Domain"
+		subgraph "Data Domain"
+			subgraph "Data Platform"
+				subgraph "Data Platform Orchestrator"
+					dataOrchInterface["Data Platform Orchestrator Interface"]
+					dataOrch["Data Platform Orchestrator"]
+				end
+				subgraph "Data Catalog Layer"
+					dataCatalogUI["Data Catalog UI"]
+					metadataData["Metadata"]
+					dataCrawlers["Data Crawlers"]
+					dataLabelers["Auto Labelers"]
+				end
+				subgraph "Data Presentation"
+					biTools["BI and Visualization Tools"]
+					biReports["BI Reports"]
+				end
+				subgraph "Data Landing Layer"
+					dataLandingProxy["Data Landing Proxy"]
+					rawData["Raw Datasets"]
+					rawDataExp["Raw Data Experiments"]
+					subgraph "Data Landing Processing Layer"
+						dataIngestionPipeline["Ingestion Pipeline"]
+						dataLandingProcessing["Data Transformation Pipelines"]
+					end
+				end
+				subgraph "Data Management Layer"
+					dataManagementProxy["Data Management Proxy"]
+					vettedDatasets["Vetted Datasets"]
+					dmzExp["DMZ Data Experiments"]
+					processedData["Processed Data"]
+					featureStores["Feature Stores"]
+					subgraph "Data Management Processing Layer"
+						dataManagementProcessing["Data Transformation Pipelines"]
+						dataValidationPipelines["Data Validation Pipelines"]
+					end
+				end
+			end
+			subgraph "Training Platform"
+				subgraph "Training Platform Orchestrator"
+					expTrackSystem["Experiment Tracking System"]
+					trainOrchInterface["Training Platform Orchestrator API"]
+					trainOrch["Training Platform Orchestrator"]
+				end
+				subgraph "Model Registry Layer"
+					modelRegistryUI["Model Registry UI"]
+					metadataModel["Metadata"]
+					unvettedModels["Unvetted Models"]
+					vettedModels["Vetted Models"]
+				end
+				subgraph "AI Processing Layer"
+					modelIngestionPipeline["Ingestion Pipeline"]
+					modelProcessing["Model Training Pipeline"]
+					modelEvaluationPipeline["Model Evaluation Pipelines"]
+					hyperParameterStore["Hyperparameter Store"]
+				end
+			end
+			subgraph "Lineage and Observability"
+				logs["Logs"]
+				traces["Traces"]
+				metrics["Metrics"]
+				events["Events"]
+			end
+			subgraph "Attestation and Lineage Layer"
+				attestations["Attestations"]
+			end
+			streamingProcesses["Streaming Processes"]
+		end
+		otherDomainDataSources["Other Domain's Data Sources"]
+	end
+	thirdPartyModels["3rd Party Models"]
+	thirdPartyDataSources["3rd Party Data Sources"]
+	dataeng -->|"Interacts with"| dataOrchInterface
+	dataOrchInterface -->|"Exposes"| dataOrch
+	dataOrch -->|"Produces"| logs
+	dataOrch -->|"Produces"| traces
+	dataOrch -->|"Produces"| metrics
+	dataOrch -->|"Produces"| events
+	dataeng -->|"Interacts with"| dataCatalogUI
+	dataCatalogUI -->|"Exposes"| metadataData
+	dataLabelers -->|"Uses"| dataCrawlers
+	dataLabelers -->|"Populates"| metadataData
+	dataCrawlers -->|"Reads from"| vettedDatasets
+	dataCrawlers -->|"Reads from"| dataManagementProxy
+	dataCrawlers -->|"Reads from"| processedData
+	businessUser -->|"Interacts with"| biTools
+	biTools -->|"Reads from"| processedData
+	biTools -->|"Reads from"| vettedDatasets
+	biTools -->|"Produces"| biReports
+	dataIngestionPipeline -->|"Ingests from"| thirdPartyDataSources
+	dataIngestionPipeline -->|"Ingests from"| otherDomainDataSources
+	dataIngestionPipeline -->|"Ingests from"| streamingProcesses
+	dataLandingProxy -->|"Sources"| thirdPartyDataSources
+	dataLandingProxy -->|"Sources"| otherDomainDataSources
+	dataIngestionPipeline -->|"Produces"| rawData
+	dataOrch -->|"Triggers"| dataIngestionPipeline
+	dataValidationPipelines -->|"Uses"| dataLandingProxy
+	dataValidationPipelines -->|"Validates"| rawData
+	dataValidationPipelines -->|"Uses"| attestations
+	dataLandingProcessing -->|"Experiments on"| rawData
+	dataLandingProcessing -->|"Produces"| rawDataExp
+	dataIngestionPipeline -->|"Produces"| logs
+	dataIngestionPipeline -->|"Produces"| traces
+	dataIngestionPipeline -->|"Produces"| metrics
+	dataIngestionPipeline -->|"Produces"| events
+	dataIngestionPipeline -->|"Produces"| attestations
+	dataLandingProcessing -->|"Produces"| logs
+	dataLandingProcessing -->|"Produces"| traces
+	dataLandingProcessing -->|"Produces"| metrics
+	dataLandingProcessing -->|"Produces"| events
+	dataOrch -->|"Triggers"| dataLandingProcessing
+	dataManagementProxy -->|"Uses"| dataManagementProcessing
+	dataManagementProcessing -->|"Processes"| vettedDatasets
+	dataManagementProcessing -->|"Produces"| processedData
+	dataManagementProcessing -->|"Produces"| dmzExp
+	dataManagementProcessing -->|"Prepares for training"| dataManagementProxy
+	dataManagementProcessing -->|"Prepares for training"| vettedDatasets
+	dataManagementProcessing -->|"Prepares for training"| processedData
+	dataManagementProcessing -->|"Produces"| featureStores
+	dataManagementProcessing -->|"Produces"| logs
+	dataManagementProcessing -->|"Produces"| traces
+	dataManagementProcessing -->|"Produces"| metrics
+	dataManagementProcessing -->|"Produces"| events
+	dataManagementProcessing -->|"Produces"| attestations
+	dataOrch -->|"Triggers"| dataManagementProcessing
+	dataValidationPipelines -->|"Produces"| logs
+	dataValidationPipelines -->|"Produces"| traces
+	dataValidationPipelines -->|"Produces"| metrics
+	dataValidationPipelines -->|"Produces"| events
+	dataValidationPipelines -->|"Produces"| attestations
+	dataOrch -->|"Triggers"| dataValidationPipelines
+	datasci -->|"Interacts with"| trainOrchInterface
+	trainOrchInterface -->|"Exposes"| trainOrch
+	trainOrch -->|"Feeds"| expTrackSystem
+	trainOrch -->|"Triggers"| modelIngestionPipeline
+	trainOrch -->|"Triggers"| modelEvaluationPipeline
+	trainOrch -->|"Triggers"| modelProcessing
+	trainOrch -->|"Produces"| logs
+	trainOrch -->|"Produces"| traces
+	trainOrch -->|"Produces"| metrics
+	trainOrch -->|"Produces"| events
+	datasci -->|"Interacts with"| modelRegistryUI
+	modelRegistryUI -->|"Exposes"| metadataModel
+	metadataModel -->|"Sources"| attestations
+	modelProcessing -->|"Produces"| logs
+	modelProcessing -->|"Produces"| traces
+	modelProcessing -->|"Produces"| metrics
+	modelProcessing -->|"Produces"| events
+	modelProcessing -->|"Produces"| attestations
+	modelProcessing -->|"Reads from"| hyperParameterStore
+	modelProcessing -->|"Reads from"| featureStores
+	modelIngestionPipeline -->|"Ingests from"| thirdPartyModels
+	modelIngestionPipeline -->|"Produces"| unvettedModels
+	modelEvaluationPipeline -->|"Produces"| logs
+	modelEvaluationPipeline -->|"Produces"| traces
+	modelEvaluationPipeline -->|"Produces"| metrics
+	modelEvaluationPipeline -->|"Produces"| events
+	modelEvaluationPipeline -->|"Produces"| attestations
+	modelEvaluationPipeline -->|"Uses"| metadataModel
+	modelEvaluationPipeline -->|"Produces"| vettedModels
+	modelEvaluationPipeline -->|"Validates"| unvettedModels
+	modelProcessing -->|"Produces"| unvettedModels
+	modelProcessing -->|"Fine-tunes"| vettedModels
