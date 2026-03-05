@@ -10,9 +10,7 @@ C4Context
     System_Boundary(b1, "Data Domain") {  
       System_Boundary(dataPlatform, "Data Platform") {
         System_Boundary(dataInterface, "Data Platform Orchestrator") {
-          Container(cli, "CLI", "Interface")
-          Container(webui, "web UI", "Interface")
-          Container(dataOrchAPI, "Data Platform Orchestrator API", "Component")
+          Container(dataOrchInterface, "Data Platform Orchestrator Interface", "Component")
           Container(dataOrch, "Data Platform Orchestrator", "Component")
         }
 
@@ -20,44 +18,43 @@ C4Context
           Container(dataCatalogUI, "Data Catalog UI", "Component")
           Container(metadataData, "Metadata", "Data")
           Container(dataCrawlers, "Data Crawlers", "Component")
-          Container(dataLabelersEnrichers, "Data Labelers & Enrichers", "Component")
+          Container(dataLabelers, "Auto Labelers", "Component")
         }
         
         System_Boundary(dataPresentation, "Data Presentation") {
           %% TODO: Should this be included in an AI architecture?
           Container(biTools, "BI and Visualization Tools", "Tool")
+          Container(biReports, "BI Reports", "Tool")
         }
 
         System_Boundary(dataLanding, "Data Landing Layer") {
-          %% NOTE: datasets can be a physical copy of the data or a federated virtual dataset
-          %% pointing to an external data source
+          Container(dataLandingProxy, "Data Landing Proxy", "Storage")
           Container(rawData, "Raw Datasets", "Storage")
-          Container(dataIngestionPipeline, "Ingestion Pipeline", "Tool")
           Container(rawDataExp, "Raw Data Experiments", "Storage")
+          System_Boundary(dataLandingProcessing, "Data Landing Processing Layer") {
+            Container(dataIngestionPipeline, "Ingestion Pipeline", "Tool")
+            Container(dataLandingProcessing, "Data Transformation Pipelines", "Tool")
+          }
         }
 
         System_Boundary(dataManagement, "Data Management Layer") {
+          Container(dataManagementProxy, "Data Management Proxy", "Storage")
           Container(vettedDatasets, "Vetted Datasets", "Storage")
           Container(DMZExp, "DMZ Data Experiments", "Storage")
           Container(processedData, "Processed Data", "Storage")
           Container(featureStores, "Feature Stores", "Storage")
-        }
-
-        System_Boundary(dataProcessing, "Data Processing Layer") {
-          Container(processingCode, "Data Platform Code", "Code")
-          Container(dataProcessing, "Data Transformation Pipelines", "Tool")
-          Container(dataValidationPipelines, "Data Validation Pipelines", "Tool")
+          System_Boundary(dataManagementProcessing, "Data Management Processing Layer") {
+            Container(dataManagementProcessing, "Data Transformation Pipelines", "Tool")
+            Container(dataValidationPipelines, "Data Validation Pipelines", "Tool")
+          }
         }
       }
 
       System_Boundary(trainingLayer, "Training Platform") {
         System_Boundary(trainingInterface, "Training Platform Orchestrator") {
-          Container(trainCli, "CLI", "Interface")
-          Container(trainWebui, "web UI", "Interface")
-          Container(trainOrchAPI, "Training Platform Orchestrator API", "Component")
+          Container(ExpTrackSystem, "Experiment Tracking System", "Storage")
+          Container(trainOrchInterface, "Training Platform Orchestrator API", "Component")
           Container(trainOrch, "Training Platform Orchestrator", "Component")
-          Container(hyperParameterStore, "Hyperparameter Store", "Storage")
-          Container(expResults, "Experiment Results", "Data")
         }
 
         System_Boundary(modelRegistry, "Model Registry Layer") {
@@ -67,11 +64,11 @@ C4Context
           Container(vettedModels, "Vetted Models", "Storage")
         }
 
-        System_Boundary(modelPlatform, "Model Compute Layer") {
+        System_Boundary(AIProcessingLayer, "AI Processing Layer") {
           Container(modelIngestionPipeline, "Ingestion Pipeline", "Tool")
-          Container(modelProcessingCode, "Training Platform Code", "Code")
           Container(modelProcessing, "Model Training Pipeline", "Tool")
-          Container(modelValidationPipeline, "Model Validation Pipelines", "Tool")
+          Container(modelEvaluationPipeline, "Model Evaluations Pipelines", "Tool")
+          Container(hyperParameterStore, "Hyperparameter Store", "Storage")
         }
       }
 
@@ -79,7 +76,9 @@ C4Context
         Container(logs, "Logs", "Data")
         Container(traces, "Traces", "Data")
         Container(metrics, "Metrics", "Data")
-        Container(events, "Events", "Data")
+        Container(events, "Events", "Data")    
+      }
+      System_Boundary(atestationLayer, "Attestation and Lineage Layer") {
         Container(attestations, "Attestations", "Data")
       }
       System(streamingProcesses, "Streaming Processes", "Processes")
@@ -93,12 +92,8 @@ C4Context
 
   %% Relationships
   %%% Data Platform User Interface
-  Rel(dataeng, cli, "Interacts with")
-  Rel(dataeng, webui, "Interacts with")
-  Rel(dataeng, dataOrchAPI, "Interacts with")
-  Rel(cli, dataOrchAPI, "Makes API calls to")
-  Rel(webui, dataOrchAPI, "Makes API calls to")
-  Rel(dataOrchAPI, dataOrch, "Exposes")
+  Rel(dataeng, dataOrchInterface, "Interacts with")
+  Rel(dataOrchInterface, dataOrch, "Exposes")
   Rel(dataOrch, logs, "Produces")
   Rel(dataOrch, traces, "Produces")
   Rel(dataOrch, metrics, "Produces")
@@ -106,77 +101,75 @@ C4Context
   %%% Data Catalog
   Rel(dataeng, dataCatalogUI, "Interacts with")
   Rel(dataCatalogUI, metadataData, "Exposes")
-  Rel(dataLabelersEnrichers, dataCrawlers, "Uses")
-  Rel(metadataData, dataLabelersEnrichers, "Is populated by")
+  Rel(dataLabelers, dataCrawlers, "Uses")
+  Rel(metadataData, dataLabelers, "Is populated by")
   Rel(dataCrawlers, vettedDatasets, "Reads from")
+  Rel(dataCrawlers, dataManagementProxy, "Reads from")
   Rel(dataCrawlers, processedData, "Reads from")
-  Rel(dataCrawlers, featureStores, "Reads from")
-  Rel(dataLabelersEnrichers, vettedDatasets, "Reads from")
-  Rel(dataLabelersEnrichers, processedData, "Reads from")
-  Rel(dataLabelersEnrichers, featureStores, "Reads from")
-  Rel(dataLabelersEnrichers, attestations, "Sources")
 
   %%% Data Presentation Layer
   Rel(businessUser, biTools, "Interacts with")
   Rel(biTools, processedData, "Reads from")
-  Rel(biTools, featureStores, "Reads from")
+  Rel(biTools, vettedDatasets, "Reads from")
+  Rel(biTools, biReports, "Produce")
 
   %%% Data Landing
   Rel(dataIngestionPipeline, thirdPartyDataSources, "Ingests from")
   Rel(dataIngestionPipeline, otherDomainDataSources, "Ingests from")
   Rel(dataIngestionPipeline, streamingProcesses, "Ingests from")
+  Rel(dataLandingProxy, thirdPartyDataSources, "Sources")
+  Rel(dataLandingProxy, otherDomainDataSources, "Sources")
   Rel(dataIngestionPipeline, rawData, "Produces")
   Rel(dataOrch, dataIngestionPipeline, "Triggers")
+  Rel(dataLandingProxy, dataValidationPipelines, "Is used by")
   Rel(rawData, dataValidationPipelines, "Is validated by")
-  Rel(dataValidationPipelines, metadataData, "Uses")
-  Rel(dataProcessing, vettedDatasets, "Produces")
-  Rel(rawData, dataProcessing, "Is experimented by")
-  Rel(dataProcessing, rawDataExp, "Produces")
+  Rel(dataValidationPipelines, attestations, "Uses")
+  Rel(rawData, dataLandingProcessing, "Is experimented by")
+  Rel(dataLandingProcessing, rawDataExp, "Produces")
   Rel(dataIngestionPipeline, logs, "Produces")
   Rel(dataIngestionPipeline, traces, "Produces")
   Rel(dataIngestionPipeline, metrics, "Produces")
   Rel(dataIngestionPipeline, events, "Produces")
   Rel(dataIngestionPipeline, attestations, "Produces")
+  Rel(dataLandingProcessing, logs, "Produces")
+  Rel(dataLandingProcessing, traces, "Produces")
+  Rel(dataLandingProcessing, metrics, "Produces")
+  Rel(dataLandingProcessing, events, "Produces")
+  Rel(dataOrch, dataLandingProcessing, "Triggers")
 
-  %%% Data Processing Platform
-  Rel(dataProcessing, processingCode, "Uses")
-  Rel(dataProcessing, logs, "Produces")
-  Rel(dataProcessing, traces, "Produces")
-  Rel(dataProcessing, metrics, "Produces")
-  Rel(dataProcessing, events, "Produces")
-  Rel(dataProcessing, attestations, "Produces")
-  Rel(dataOrch, dataProcessing, "Triggers")
+  %% Data Management
+  Rel(dataManagementProxy, dataManagementProcessing, "Uses")
+  Rel(vettedDatasets, dataManagementProcessing, "Is processed by")
+  Rel(dataManagementProcessing, processedData, "Produces")
+  Rel(dataManagementProcessing, DMZExp, "Produces")
 
-  Rel(dataValidationPipelines, processingCode, "Uses")
+  Rel(dataManagementProxy, dataManagementProcessing, "Is prepared for training by")
+  Rel(vettedDatasets, dataManagementProcessing, "Is prepared for training by")
+  Rel(dataManagementProcessing, featureStores, "Produces")
+
+  Rel(processedData, dataManagementProcessing, "Is prepared for training by")
+  Rel(dataManagementProcessing, featureStores, "Produces")
+
+  Rel(dataManagementProcessing, logs, "Produces")
+  Rel(dataManagementProcessing, traces, "Produces")
+  Rel(dataManagementProcessing, metrics, "Produces")
+  Rel(dataManagementProcessing, events, "Produces")
+  Rel(dataManagementProcessing, attestations, "Produces")
+  Rel(dataOrch, dataManagementProcessing, "Triggers")
+
   Rel(dataValidationPipelines, logs, "Produces")
   Rel(dataValidationPipelines, traces, "Produces")
   Rel(dataValidationPipelines, metrics, "Produces")
   Rel(dataValidationPipelines, events, "Produces")
   Rel(dataValidationPipelines, attestations, "Produces")
   Rel(dataOrch, dataValidationPipelines, "Triggers")
-  Rel(dataProcessing, attestations, "Produces")
-
-  %% Data Management
-  Rel(vettedDatasets, dataProcessing, "Is processed by")
-  Rel(dataProcessing, processedData, "Produces")
-  Rel(vettedDatasets, dataProcessing, "Is experimented by")
-  Rel(dataProcessing, DMZExp, "Produces")
-
-  Rel(vettedDatasets, dataProcessing, "Is prepared for training by")
-  Rel(dataProcessing, featureStores, "Produces")
-
-  Rel(processedData, dataProcessing, "Is prepared for training by")
-  Rel(dataProcessing, featureStores, "Produces")
 
   %%% Training Platform User Interface
-  Rel(datasci, trainCli, "Interacts with")
-  Rel(datasci, trainWebui, "Interacts with")
-  Rel(datasci, trainOrchAPI, "Interacts with")
-  Rel(trainCli, trainOrchAPI, "Makes API calls to")
-  Rel(trainWebui, trainOrchAPI, "Makes API calls to")
-  Rel(trainOrchAPI, trainOrch, "Exposes")
+  Rel(datasci, trainOrchInterface, "Interacts with")
+  Rel(trainOrchInterface, trainOrch, "Exposes")
+  Rel(trainOrch, ExpTrackSystem, "Feeds")
   Rel(trainOrch, modelIngestionPipeline, "Triggers")
-  Rel(trainOrch, modelValidationPipeline, "Triggers")
+  Rel(trainOrch, modelEvaluationPipeline, "Triggers")
   Rel(trainOrch, modelProcessing, "Triggers")
   Rel(trainOrch, logs, "Produces")
   Rel(trainOrch, traces, "Produces")
@@ -186,30 +179,28 @@ C4Context
   %%% Model Registry
   Rel(datasci, modelRegistryUI, "Interacts with")
   Rel(modelRegistryUI, metadataModel, "Exposes")
-  Rel(modelIngestionPipeline, thirdPartyModels, "Ingests from")
-  Rel(modelIngestionPipeline, unvettedModels, "Produces")
-  Rel(modelValidationPipeline, metadataModel, "Uses")
   Rel(metadataModel, attestations, "Sources")
-  Rel(unvettedModels, modelValidationPipeline, "Are validated by")
-  Rel(modelValidationPipeline, vettedModels, "Produces")
-  Rel(modelProcessing, unvettedModels, "Produces")
-  Rel(vettedModels, modelProcessing, "Are fine-tuned by")
 
   %%% Model Processing Platform
-  Rel(modelProcessing, modelProcessingCode, "Uses")
   Rel(modelProcessing, logs, "Produces")
   Rel(modelProcessing, traces, "Produces")
   Rel(modelProcessing, metrics, "Produces")
   Rel(modelProcessing, events, "Produces")
   Rel(modelProcessing, attestations, "Produces")
-  Rel(modelProcessing, expResults, "Produces")
   Rel(modelProcessing, hyperParameterStore, "Reads from")
   Rel(modelProcessing, featureStores, "Reads from")
 
-  Rel(modelValidationPipeline, modelProcessingCode, "Uses")
-  Rel(modelValidationPipeline, logs, "Produces")
-  Rel(modelValidationPipeline, traces, "Produces")
-  Rel(modelValidationPipeline, metrics, "Produces")
-  Rel(modelValidationPipeline, events, "Produces")
-  Rel(modelValidationPipeline, attestations, "Produces")
+  Rel(modelIngestionPipeline, thirdPartyModels, "Ingests from")
+  Rel(modelIngestionPipeline, unvettedModels, "Produces")
+
+  Rel(modelEvaluationPipeline, logs, "Produces")
+  Rel(modelEvaluationPipeline, traces, "Produces")
+  Rel(modelEvaluationPipeline, metrics, "Produces")
+  Rel(modelEvaluationPipeline, events, "Produces")
+  Rel(modelEvaluationPipeline, attestations, "Produces")
+  Rel(modelEvaluationPipeline, metadataModel, "Uses")
+  Rel(modelEvaluationPipeline, vettedModels, "Produces")
+  Rel(unvettedModels, modelEvaluationPipeline, "Are validated by")
+  Rel(modelProcessing, unvettedModels, "Produces")
+  Rel(vettedModels, modelProcessing, "Are fine-tuned by")
 
