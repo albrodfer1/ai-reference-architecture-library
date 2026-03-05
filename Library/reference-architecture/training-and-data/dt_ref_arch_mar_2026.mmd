@@ -3,8 +3,8 @@ C4Context
 
   %% Users
   Person(dataeng, "Data Engineer", "A data engineer interacting with the catalog")
-  Person(businessUser, "Business User", "An business user interacting with Data Presentation and BI Tools")
-  Person(datasci, "Data Scientist", "An data scientist interacting with the Model Registry")
+  Person(businessUser, "Business User", "A business user interacting with Data Presentation and BI Tools")
+  Person(datasci, "Data Scientist", "A data scientist interacting with the Model Registry")
 
   Enterprise_Boundary(b0, "Enterprise Domain") {
     System_Boundary(b1, "Data Domain") {  
@@ -31,7 +31,7 @@ C4Context
           Container(dataLandingProxy, "Data Landing Proxy", "Storage")
           Container(rawData, "Raw Datasets", "Storage")
           Container(rawDataExp, "Raw Data Experiments", "Storage")
-          System_Boundary(dataLandingProcessing, "Data Landing Processing Layer") {
+          System_Boundary(dataLandingProcessingLayer, "Data Landing Processing Layer") {
             Container(dataIngestionPipeline, "Ingestion Pipeline", "Tool")
             Container(dataLandingProcessing, "Data Transformation Pipelines", "Tool")
           }
@@ -40,10 +40,10 @@ C4Context
         System_Boundary(dataManagement, "Data Management Layer") {
           Container(dataManagementProxy, "Data Management Proxy", "Storage")
           Container(vettedDatasets, "Vetted Datasets", "Storage")
-          Container(DMZExp, "DMZ Data Experiments", "Storage")
+          Container(dmzExp, "DMZ Data Experiments", "Storage")
           Container(processedData, "Processed Data", "Storage")
           Container(featureStores, "Feature Stores", "Storage")
-          System_Boundary(dataManagementProcessing, "Data Management Processing Layer") {
+          System_Boundary(dataManagementProcessingLayer, "Data Management Processing Layer") {
             Container(dataManagementProcessing, "Data Transformation Pipelines", "Tool")
             Container(dataValidationPipelines, "Data Validation Pipelines", "Tool")
           }
@@ -52,7 +52,7 @@ C4Context
 
       System_Boundary(trainingLayer, "Training Platform") {
         System_Boundary(trainingInterface, "Training Platform Orchestrator") {
-          Container(ExpTrackSystem, "Experiment Tracking System", "Storage")
+          Container(expTrackSystem, "Experiment Tracking System", "Storage")
           Container(trainOrchInterface, "Training Platform Orchestrator API", "Component")
           Container(trainOrch, "Training Platform Orchestrator", "Component")
         }
@@ -64,10 +64,10 @@ C4Context
           Container(vettedModels, "Vetted Models", "Storage")
         }
 
-        System_Boundary(AIProcessingLayer, "AI Processing Layer") {
+        System_Boundary(aiProcessingLayer, "AI Processing Layer") {
           Container(modelIngestionPipeline, "Ingestion Pipeline", "Tool")
           Container(modelProcessing, "Model Training Pipeline", "Tool")
-          Container(modelEvaluationPipeline, "Model Evaluations Pipelines", "Tool")
+          Container(modelEvaluationPipeline, "Model Evaluation Pipelines", "Tool")
           Container(hyperParameterStore, "Hyperparameter Store", "Storage")
         }
       }
@@ -78,7 +78,7 @@ C4Context
         Container(metrics, "Metrics", "Data")
         Container(events, "Events", "Data")    
       }
-      System_Boundary(atestationLayer, "Attestation and Lineage Layer") {
+      System_Boundary(attestationLayer, "Attestation and Lineage Layer") {
         Container(attestations, "Attestations", "Data")
       }
       System(streamingProcesses, "Streaming Processes", "Processes")
@@ -111,7 +111,7 @@ C4Context
   Rel(businessUser, biTools, "Interacts with")
   Rel(biTools, processedData, "Reads from")
   Rel(biTools, vettedDatasets, "Reads from")
-  Rel(biTools, biReports, "Produce")
+  Rel(biTools, biReports, "Produces")
 
   %%% Data Landing
   Rel(dataIngestionPipeline, thirdPartyDataSources, "Ingests from")
@@ -141,12 +141,10 @@ C4Context
   Rel(dataManagementProxy, dataManagementProcessing, "Uses")
   Rel(dataManagementProcessing, vettedDatasets, "Processes")
   Rel(dataManagementProcessing, processedData, "Produces")
-  Rel(dataManagementProcessing, DMZExp, "Produces")
+  Rel(dataManagementProcessing, dmzExp, "Produces")
 
   Rel(dataManagementProcessing, dataManagementProxy, "Prepares for training")
   Rel(dataManagementProcessing, vettedDatasets, "Prepares for training")
-  Rel(dataManagementProcessing, featureStores, "Produces")
-
   Rel(dataManagementProcessing, processedData, "Prepares for training")
   Rel(dataManagementProcessing, featureStores, "Produces")
 
@@ -167,7 +165,7 @@ C4Context
   %%% Training Platform User Interface
   Rel(datasci, trainOrchInterface, "Interacts with")
   Rel(trainOrchInterface, trainOrch, "Exposes")
-  Rel(trainOrch, ExpTrackSystem, "Feeds")
+  Rel(trainOrch, expTrackSystem, "Feeds")
   Rel(trainOrch, modelIngestionPipeline, "Triggers")
   Rel(trainOrch, modelEvaluationPipeline, "Triggers")
   Rel(trainOrch, modelProcessing, "Triggers")
